@@ -4,6 +4,8 @@ Fonebook is a mobile application that allows to store and retrieve their contact
 
 This repository contains the server that powers the mobile application.
 
+Client project: https://github.com/Tijesunimi/fonebook_client
+
 Technologies
   - NodeJS with Express
   - MongoDB
