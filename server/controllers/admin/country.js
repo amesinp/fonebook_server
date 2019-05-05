@@ -7,7 +7,7 @@ class Countries {
             return res.status(200).send(countries);
         }
         catch(err) {
-            return res.status(500).send(err);
+            return res.status(500).send({ 'message': err.message });
         }
     }
     
@@ -17,7 +17,7 @@ class Countries {
             return res.status(200).send(country);
         }
         catch(err) {
-            return res.status(500).send(err);
+            return res.status(500).send({ 'message': err.message });
         }
     }
     
@@ -30,7 +30,7 @@ class Countries {
             return res.status(200).send(createdCountry);
         }
         catch(err) {
-            return res.status(500).send(err);
+            return res.status(500).send({ 'message': err.message });
         }
     }
 
@@ -40,7 +40,7 @@ class Countries {
             return res.status(200).send(country);
         }
         catch(err) {
-            return res.status(500).send(err);
+            return res.status(500).send({ 'message': err.message });
         }
     }
 }

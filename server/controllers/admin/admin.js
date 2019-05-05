@@ -28,7 +28,7 @@ class Admins {
             return res.status(200).send(admins);
         }
         catch(err) {
-            return res.status(500).send(err);
+            return res.status(500).send({ 'message': err.message });
         }
     }
 }

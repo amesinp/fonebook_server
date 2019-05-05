@@ -1,4 +1,5 @@
 import adminRouter from './admin';
+import appRouter from './app';
 
 export default (app) => {
     'use strict';
@@ -8,4 +9,6 @@ export default (app) => {
     });
 
     app.use('/api/admin', adminRouter);
+
+    app.use('/api', appRouter);
 }
