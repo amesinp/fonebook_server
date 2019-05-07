@@ -23,8 +23,13 @@ class Countries {
     
     static async create(req, res, next) {
         try {
+            let id = 1;
+            let lastCountry = await Country.findOne().sort({ _id: -1 });
+            if (lastCountry)
+                id += lastCountry._id;
+
             let country = new Country(req.body);
-            country._id = (await Country.count()) + 1;
+            country._id = id;
             
             var createdCountry = await Country.create(country);
             return res.status(200).send(createdCountry);
