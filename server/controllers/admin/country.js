@@ -1,4 +1,6 @@
 import Country from '../../models/country';
+import CountryContact from '../../models/country_contact';
+import Category from '../../models/category';
 
 class Countries {
     static async fetch(req, res, next) {
@@ -46,6 +48,98 @@ class Countries {
         }
         catch(err) {
             return res.status(500).send({ 'message': err.message });
+        }
+    }
+    
+    static async fetchContacts(req, res, next) {
+        try {
+            var id = req.params.id;
+            var contacts = await CountryContact.find({ country: id }).populate('country').populate('category');
+            return res.status(200).send(contacts);
+        }
+        catch (err) {
+            return res.status(500).send({ 'message': err.message });
+        }
+    }
+
+    static async fetchOneContact(req, res, next) {
+        try {
+            var countryId = req.params.id;
+            var contactId = req.params.contactid;
+
+            var contact = await CountryContact.findOne({ 
+                _id: contactId,
+                country: countryId
+            }).populate('country').populate('category');
+            return res.status(200).send(contact);
+        }
+        catch (err) {
+            return res.status(500).send({ 'message': err.message });   
+        }
+    }
+
+    static async createContact(req, res, next) {
+        try {
+            var countryId = req.params.id;
+            var country = await Country.findOne({ _id: countryId });
+            if (!country)
+                return res.status(400).send({ errors: {
+                    'country': 'Country does not exist'
+                }});
+
+            var categoryId = req.body.category;
+            var category = await Category.findOne({ _id: categoryId });
+            if (!category)
+                return res.status(400).send({ errors: {
+                    'category': 'Category does not exist'
+                }});
+                
+            let id = 1;
+            let lastContact = await CountryContact.findOne().sort({ _id: -1 });
+            if (lastContact)
+                id += lastContact._id;
+
+            var contact = new CountryContact({
+                _id: id,
+                country: countryId,
+                category: categoryId,
+                name:  req.body.name,
+                phones: req.body.phones,
+                emails: req.body.emails
+            });
+            var createdContact = await CountryContact.create(contact);
+            var updatedContact = (await CountryContact.findOne({ _id: createdContact._id }).populate('country').populate('category')).toJSON();
+
+            return res.status(200).send(updatedContact);
+        }
+        catch (err) {
+            return res.status(500).send({ 'message': err.message });
+        }
+    }
+
+    static async updateOneContact(req, res, next) {
+        try {
+            var contactId = req.params.contactid;
+
+            var categoryId = req.body.category;
+            var category = await Category.findOne({ _id: categoryId });
+            if (!category)
+                return res.status(400).send({ errors: {
+                    'category': 'Category does not exist'
+                }});
+
+            var contact = await CountryContact.findOneAndUpdate({ 
+                _id: contactId
+            }, {
+                category: categoryId,
+                name:  req.body.name,
+                phones: req.body.phones,
+                emails: req.body.emails
+            }, { new: true }).populate('country').populate('category');
+            return res.status(200).send(contact);
+        }
+        catch (err) {
+            return res.status(500).send({ 'message': err.message });   
         }
     }
 }

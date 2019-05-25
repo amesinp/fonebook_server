@@ -2,6 +2,7 @@ import express from 'express';
 
 //Controllers
 import AuthController from '../controllers/auth';
+
 //Middleware
 import auth from '../middleware/auth';
 import userValidation from '../validations/user';
