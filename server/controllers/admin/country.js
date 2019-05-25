@@ -142,6 +142,21 @@ class Countries {
             return res.status(500).send({ 'message': err.message });   
         }
     }
+
+    static async deleteOneContact(req, res, next) {
+        try {
+            var contactId = req.params.contactid;
+
+            var deletedContact = await CountryContact.deleteOne({ _id: contactId });
+            if (deletedContact.ok == "1") {
+                return res.status(200).send({ 'message': "Contact deleted successfully" });
+            }
+            return res.status(500).send({ 'message': "An error occured deleting contact" });
+        }
+        catch (err) {
+            return res.status(500).send({ 'message': err.message });   
+        }
+    }
 }
 
 export default Countries;

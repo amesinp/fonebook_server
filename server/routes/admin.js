@@ -30,6 +30,7 @@ router.get('/countries/:id/contacts', auth, CountryController.fetchContacts);
 router.post('/countries/:id/contacts', auth, countryContactValidation, CountryController.createContact);
 router.get('/countries/:id/contacts/:contactid', auth, CountryController.fetchOneContact);
 router.put('/countries/:id/contacts/:contactid', auth, countryContactValidation, CountryController.updateOneContact);
+router.delete('/countries/:id/contacts/:contactid', auth, CountryController.deleteOneContact);
 
 router.get('/categories', auth, CategoryController.fetch);
 router.post('/categories', auth, categoryValidation, CategoryController.create);
