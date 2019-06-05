@@ -29,6 +29,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    is_social_auth: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -50,10 +54,13 @@ userSchema.methods.validatePassword = async function(password) {
 
 userSchema.methods.toJSON = function() {
     return {
-        'name': this.first_name + " " + this.last_name,
+        'id': this._id,
+        'first_name': this.first_name,
+        'last_name': this.last_name,
         'email': this.email,
         'country': this.country.name,
-        'phone': "+" + this.country.phone_code + this.phone
+        'phone': "+" + this.country.phone_code + this.phone,
+        'social_auth': this.is_social_auth
     };
 }
 
