@@ -38,15 +38,11 @@ class Auth {
         try {
             let existingUser = await User.findOne({ 'email': req.body.email });
             if (existingUser) 
-                return res.status(400).send({ errors: {
-                    'email': 'Email address already exists'
-                }});
+                return res.status(400).send({ message: 'Email address already exists' });
 
             let existingCountry = await Country.findOne({ _id: req.body.country });
             if (!existingCountry)
-                return res.status(400).send({ errors: {
-                    'country': 'Country not supported'
-                }});
+                return res.status(400).send({ message: 'Country not currently supported. We are working to expand our reach' });
 
             var user = new User({
                 first_name: req.body.first_name,
@@ -56,11 +52,11 @@ class Auth {
                 phone: req.body.phone,
                 is_social_auth: req.body.social_auth
             });
-            if (req.body.social_auth)
+            if (req.body.social_auth == true)
                 user.password = req.body.password;
             else
                 await user.setPassword(req.body.password);
-
+            
             var createdUser = await User.create(user);
             var updatedUser = (await User.findOne({ _id: createdUser._id }).populate('country')).toJSON();
 
