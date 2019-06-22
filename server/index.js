@@ -8,6 +8,7 @@ import initializeDb from './database';
 const app = express();
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(expressValidator());
+app.use(express.static('public'));
 
 routes(app);
 

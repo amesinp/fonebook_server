@@ -25,7 +25,7 @@ const contactSchema = new Schema({
     }
 });
 
-contactSchema.methods.toJSON = function() {
+/*contactSchema.methods.toJSON = function() {
     return {
         'id': this._id,
         'country': this.country.name,
@@ -33,6 +33,19 @@ contactSchema.methods.toJSON = function() {
         'name': this.name,
         'phones': this.phones,
         'emails': this.emails
+    };
+}*/
+
+contactSchema.methods.toJSON = function() {
+    return {
+        'names': {
+            'display': this.name
+        },
+        'identifier': 'c' + this._id,
+        'phones': this.phones,
+        'emails': this.emails,
+        'category': this.category.name,
+        'is_country': true
     };
 }
 
